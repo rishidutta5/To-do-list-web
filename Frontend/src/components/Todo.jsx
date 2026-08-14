@@ -16,7 +16,6 @@ function Todo() {
 
     const token = localStorage.getItem("token");
 
-    // FIXED: Updated all URLs to match your correct backend (s277)
     const API_URL = "https://todo-backend-s277.onrender.com/api/todos";
 
     const getTodo = async () => {
@@ -42,7 +41,6 @@ function Todo() {
     };
 
     const addTodo = async (e) => {
-        // FIXED: Corrected spelling of preventDefault
         e.preventDefault();
 
         if (!title.trim()) {
@@ -81,7 +79,6 @@ function Todo() {
 
     const startEdit = (todo) => {
         setEditID(todo._id);
-        // FIXED: Changed setTitle to setEditTitle so the edit box populates correctly
         setEditTitle(todo.title);
     };
 
@@ -95,55 +92,54 @@ function Todo() {
     };
 
     return (
-        <div className="todo-container">
-            <div className="todo-header">
-                <h1>Todo List</h1>
-                <button onClick={logout} className="logout-btn"> Logout</button>
+        <>
+            
+            <h1 className="app-title">Taskify</h1>
+
+            <div className="todo-container">
+                <div className="todo-header">
+                    <h1>Todo List</h1>
+                    <button onClick={logout} className="logout-btn"> Logout</button>
+                </div>
+                <form onSubmit={addTodo}>
+                    <input type="text" placeholder="Enter a new task" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <button type="submit">Add</button>
+                </form>
+
+                {loading && (<p className="loading"> Loading todos....</p>)}
+
+                {error && (<p className="error">{error}</p>)}
+
+                {!loading && todos.length === 0 && (
+                    <p> No Todo yet. Add your First Task in it </p>
+                )}
+
+                <div>
+                    {todos.map((todo) => (
+                        <div className="todo-item" key={todo._id}>
+                            {editId === todo._id ? (
+                                <>
+                                    <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
+
+                                    <button onClick={() => updateTask(todo._id)}> Save</button>
+
+                                    <button onClick={() => { setEditID(null); setEditTitle("") }}> Cancel</button>
+                                </>
+                            ) : (
+                                <>
+                                    <input type="checkbox" checked={todo.completed} onChange={() => toogleTodo(todo)} />
+                                    <span className={todo.completed ? "completed" : ""}> {todo.title}</span>
+
+                                    <button onClick={() => startEdit(todo)}> Edit</button>
+
+                                    <button onClick={() => deleteTodo(todo._id)}> Delete</button>
+                                </>
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
-            <form onSubmit={addTodo}>
-                <input type="text" placeholder="Enter a new task" value={title} onChange={(e) => setTitle(e.target.value)} />
-                <button type="submit">Add</button>
-            </form>
-
-            {loading && (<p className="loading"> Loading todos....</p>)}
-
-            {error && (<p className="error">{error}</p>)}
-
-            {/* FIXED: Wrapped conditional rendering in curly braces */}
-            {!loading && todos.length === 0 && (
-                <p> No Todo yet. Add your First Task in it </p>
-            )}
-
-            <div>
-                {/* FIXED: Changed curly braces to parenthesis so the map function actually returns the JSX elements */}
-                {todos.map((todo) => (
-                    <div className="todo-item" key={todo._id}>
-                        {editId === todo._id ? (
-                            <>
-                                {/* FIXED: e.value.target to e.target.value */}
-                                <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} />
-
-                                <button onClick={() => updateTask(todo._id)}> Save</button>
-
-                                <button onClick={() => { setEditID(null); setEditTitle("") }}> Cancel</button>
-                            </>
-                        ) : (
-                            <>
-                                {/* FIXED: Added arrow function to onChange to prevent infinite loop */}
-                                <input type="checkbox" checked={todo.completed} onChange={() => toogleTodo(todo)} />
-                                <span className={todo.completed ? "completed" : ""}> {todo.title}</span>
-
-                                {/* FIXED: Added arrow function */}
-                                <button onClick={() => startEdit(todo)}> Edit</button>
-
-                                {/* FIXED: Added arrow function */}
-                                <button onClick={() => deleteTodo(todo._id)}> Delete</button>
-                            </>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
+        </>
     );
 }
 

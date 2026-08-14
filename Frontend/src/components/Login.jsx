@@ -39,35 +39,40 @@ function Login() {
   };
 
   return (
-    <div>
-      <div>
-        <h1> Login Account</h1>
-        <form onSubmit={submitData}>
-          <input 
-            type="email" 
-            placeholder="Enter Your Email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-          />
-          <input 
-            type="password" 
-            placeholder="Enter Your Password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-          />
+    <>
+      
+      <h1 className="app-title">Taskify</h1>
 
-          {error && (
-            <p className="error">{error}</p>
-          )}
-          
-          <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
+      <div className="auth-container">
+        <div>
+          <h1> Login Account</h1>
+          <form onSubmit={submitData}>
+            <input 
+              type="email" 
+              placeholder="Enter Your Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+            />
+            <input 
+              type="password" 
+              placeholder="Enter Your Password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+            />
 
-        <p>Don't have an account ? {" "} <Link to="/register"> Register </Link></p>
+            {error && (
+              <p className="error">{error}</p>
+            )}
+            
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
+          <p>Don't have an account ? {" "} <Link to="/register"> Register </Link></p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
