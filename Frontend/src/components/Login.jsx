@@ -1,38 +1,40 @@
 import axios from "axios";
 import { useState } from "react";
-import {useNavigate, Link} from "react-router-dom";
-import Register from "./Register";
+import { useNavigate, Link } from "react-router-dom";
 
-function Login(){
+function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false); 
   const [error, setError] = useState("");
 
-  const submitData = async(e)=>{
+  const submitData = async (e) => {
     e.preventDefault();
 
     setError("");
     setLoading(true);
 
-    try{
-        await axios.post("https://todo-backend-s277.onrender.com/api/auth/login",{ email:email, password:password})
+    try {
+      const response = await axios.post("https://todo-backend-s277.onrender.com/api/auth/login", { 
+        email: email, 
+        password: password 
+      });
 
-        alert("Login Successful");
+      alert("Login Successful");
 
-        const token = Response.data.token;
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
-        localStorage.setItem("token", token);
+      navigate("/todo");
 
-        localStorage.setItem("user", JSON.stringify(Response.data.user));
-
-    }catch(error){
-        setError(error.respond?.data?.message || "Login failed");
-    }finally{
-        setLoading(false);
+    } catch (error) {
+      setError(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,18 +43,32 @@ function Login(){
       <div>
         <h1> Login Account</h1>
         <form onSubmit={submitData}>
-          <input type="email" placeholder="Enter Your Email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
-          <input type="password" placeholder="Enter Your Password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+          <input 
+            type="email" 
+            placeholder="Enter Your Email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+          <input 
+            type="password" 
+            placeholder="Enter Your Password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
 
           {error && (
             <p className="error">{error}</p>
           )}
-          <button type="submit">{loading ? "Logging in" : "Login"}</button>
+          
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
 
-        <p>Don't have an account ? {""} <Link to="/register"> Register </Link></p>
+        <p>Don't have an account ? {" "} <Link to="/register"> Register </Link></p>
       </div>
     </div>
-  )
+  );
 }
-export default Register;
+
+export default Login;
