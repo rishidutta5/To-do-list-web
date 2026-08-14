@@ -12,7 +12,7 @@ const todoRouter = require("./routes/todo.routes");
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb+srv://rishirajdutta1505_db_user:n9yn4kQw0e89AE7y@cluster0.9l8bq8w.mongodb.net/?appName=Cluster0")
+mongoose.connect("mongodb+srv://rishirajdutta1505_db_user:rishi1234@cluster0.9l8bq8w.mongodb.net/todoDB")
 .then(()=>{
     console.log("MongoDB connected")
 })

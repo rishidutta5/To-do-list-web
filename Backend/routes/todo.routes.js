@@ -18,4 +18,4 @@ todoRouter.put("/:id", auth, updateTodo);
 //remove Todo
 todoRouter.delete("/:id", auth, removeTodo);
 
-module.exports = router;
+module.exports = todoRouter;
